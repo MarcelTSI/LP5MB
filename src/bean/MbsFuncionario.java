@@ -81,7 +81,12 @@ public class MbsFuncionario  implements java.io.Serializable {
         this.mbsApelido = mbsApelido;
     }
 
+    @Override
+    public String toString() {
+        return mbsNome;
+    }
 
+    
 
 
 }

@@ -19,6 +19,7 @@ import javax.swing.table.AbstractTableModel;
     
     public void setList(List lista){
         this.lista = lista;
+        this.fireTableDataChanged();
     }
     
     public MbsFornecedor getBean(int row) {
@@ -48,7 +49,7 @@ import javax.swing.table.AbstractTableModel;
             return fornecedor.getMbsCnpj();
         }
         if( columnIndex == 3){
-            return fornecedor.getMbsCidade();
+            return fornecedor.getMbsDataCadastro();
         }
         
         return "";
@@ -66,7 +67,7 @@ import javax.swing.table.AbstractTableModel;
             return "Cnpj";
         }
         if( column == 3){
-            return "Cidade";
+            return "Data de Cadastro";
         }
         return "";
     }

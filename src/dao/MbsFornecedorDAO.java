@@ -6,8 +6,10 @@
 package dao;
 
 import bean.MbsFornecedor;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -59,5 +61,35 @@ public class MbsFornecedorDAO extends DAO_Abstract {
         return lista;
         
     }
+    
+    public List listNome(String nome) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFornecedor.class);
+        criteria.add(Restrictions.like("mbsNome", "%" + nome + "%"));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+
+    }
+    
+    public List listData(Date data) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFornecedor.class);
+        criteria.add(Restrictions.eq("mbsDataCadastro", data));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+
+    public List listNomeData(String nome, Date data) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFornecedor.class);
+        criteria.add(Restrictions.like("mbsNome", "%" + nome + "%"));
+        criteria.add(Restrictions.eq("mbsDataCadastro", data));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+
     
 }

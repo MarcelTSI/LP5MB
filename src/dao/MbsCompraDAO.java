@@ -6,6 +6,7 @@
 package dao;
 
 import bean.MbsCompra;
+import bean.MbsFornecedor;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -58,6 +59,36 @@ public class MbsCompraDAO extends DAO_Abstract {
         session.getTransaction().commit();        
         return lista;
         
+    }
+    
+        public List listFornecedor(int Forn) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFornecedor.class);
+        criteria.add(Restrictions.eq("mbsFornecedor.mbsIdFornecedor", Forn));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+    
+    public List listPreco(double preco) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsCompra.class);
+        criteria.add(Restrictions.ge("mbsPrecoCompra", preco));
+        criteria.add(Restrictions.le("mbsPrecoCompra", preco));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+    
+    public List listFornecedorPreco(int Forn, double preco) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsCompra.class);
+        criteria.add(Restrictions.eq("mbsFornecedor.mbsIdFornecedor", Forn));
+        criteria.add(Restrictions.ge("mbsPrecoCompra", preco));
+        criteria.add(Restrictions.le("mbsPrecoCompra", preco));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
     }
     
 }

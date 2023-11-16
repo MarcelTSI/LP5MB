@@ -8,6 +8,7 @@ package dao;
 import bean.MbsProduto;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -58,6 +59,36 @@ public class MbsProdutoDAO extends DAO_Abstract {
         session.getTransaction().commit();        
         return lista;
         
+    }
+    
+    public List listNome(String  mbsNome){
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsProduto.class);
+        criteria.add(Restrictions.like("mbsNome", mbsNome, MatchMode.ANYWHERE));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+    
+    public List listPreco(double mbsPreco){
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsProduto.class);
+        criteria.add(Restrictions.ge("mbsPreco", mbsPreco )); 
+        criteria.add(Restrictions.le("mbsPreco", mbsPreco ));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+}
+
+        public List listNomePreco(String mbsNome, double mbsPreco){
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsProduto.class);
+        criteria.add(Restrictions.like("mbsNome", mbsNome, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.ge("mbsPreco", mbsPreco )); 
+        criteria.add(Restrictions.le("mbsPreco", mbsPreco ));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
     }
     
 }

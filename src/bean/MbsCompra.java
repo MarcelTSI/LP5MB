@@ -30,6 +30,7 @@ public class MbsCompra  implements java.io.Serializable {
 
      private int mbsIdCompra;
      private MbsFornecedor mbsFornecedor;
+     private MbsFuncionario mbsFuncionario;
      private Date mbsDataCompra;
      private int mbsProdutoComprado;
      private double mbsPrecoCompra;
@@ -68,6 +69,16 @@ public class MbsCompra  implements java.io.Serializable {
     
     public void setMbsFornecedor(MbsFornecedor mbsFornecedor) {
         this.mbsFornecedor = mbsFornecedor;
+    }
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="mbs_funcionario")
+    public MbsFuncionario getMbsFuncionario() {
+        return this.mbsFuncionario;
+    }
+    
+    public void setMbsFuncionario(MbsFuncionario mbsFuncionario) {
+        this.mbsFuncionario = mbsFuncionario;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

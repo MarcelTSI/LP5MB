@@ -59,4 +59,34 @@ public class MbsFuncionarioDAO extends DAO_Abstract {
         
     }
     
+        public List listNome(String nome) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFuncionario.class);
+        criteria.add(Restrictions.like("mbsNome", "%" + nome + "%"));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+
+    }
+    
+    public List listCpf(String cpf) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFuncionario.class);
+        criteria.add(Restrictions.like("mbsCpf", "%" + cpf + "%"));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+    }
+    
+    public List listNomeCpf(String nome, String cpf) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsFuncionario.class);
+        criteria.add(Restrictions.like("mbsNome", "%" + nome + "%"));
+        criteria.add(Restrictions.like("mbsCpf", "%" + cpf + "%"));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
+
+    }
+    
 }
