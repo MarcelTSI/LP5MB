@@ -25,6 +25,7 @@ public class jDlgMbsConsultaProduto extends javax.swing.JDialog {
     public jDlgMbsConsultaProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("Consulta de Produtos");
         setLocationRelativeTo(null);
         mbsProdutoControle = new MbsProdutoControle();
         mbsProdutoDAO = new MbsProdutoDAO();

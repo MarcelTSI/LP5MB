@@ -29,6 +29,7 @@ public class jDlgMbsConsultaUsuarios extends javax.swing.JDialog {
     public jDlgMbsConsultaUsuarios(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("Consulta de Usuários");
         setLocationRelativeTo(null);
         mbsUsuariosControle = new MbsUsuariosControle();
         mbsUsuariosDAO = new MbsUsuariosDAO();

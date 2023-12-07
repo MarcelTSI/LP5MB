@@ -119,6 +119,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuUsuariosConsulta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagens/usuarios.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Usuarios"/>
               </Properties>
               <Events>
@@ -127,6 +130,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuProdutoConsulta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagens/produtos_2.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Produto"/>
               </Properties>
               <Events>
@@ -135,6 +141,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuFuncionarioConsulta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagens/funcionarios.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Funcionario"/>
               </Properties>
               <Events>
@@ -143,6 +152,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuFornecedorConsulta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagens/fornecedores.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Fornecedor"/>
               </Properties>
               <Events>
@@ -151,6 +163,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuComprasConsulta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagens/compras.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Compras"/>
               </Properties>
               <Events>

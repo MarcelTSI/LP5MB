@@ -36,7 +36,7 @@ public class jDlgMbsFornecedor extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         Util.habilitar(false, jBtnConfirmar, jBtnCancelar, jTxtCodigo, jTxtNome, jFmtTelefone, jTxtEmail, jFmtCnpj, jTxtEndereco, jTxtGarantia, jTxtPais, jTxtCidade, jTxtEstado, jTxtRamoAtuacao, jFmtDatadeCadastro, jChbAtivo, jTxtObservacoes, jFmtCep);
-        setTitle("Fornecedores");
+        setTitle("Cadastro de Fornecedores");
         setLocationRelativeTo(null);
         try {
             mascaraCnpj = new MaskFormatter("##.###.###/0001-##");
@@ -75,7 +75,7 @@ public class jDlgMbsFornecedor extends javax.swing.JDialog {
 
     public MbsFornecedor viewBean() {
         MbsFornecedor mbsfornecedor = new MbsFornecedor();
-        int id = Integer.valueOf(jTxtCodigo.getText());
+        int id = Util.strInt(jTxtCodigo.getText());
         mbsfornecedor.setMbsIdFornecedor(id);
         mbsfornecedor.setMbsNome(jTxtNome.getText());
         mbsfornecedor.setMbsTelefone(jFmtTelefone.getText());
@@ -97,7 +97,7 @@ public class jDlgMbsFornecedor extends javax.swing.JDialog {
     }
 
     public void beanView(MbsFornecedor mbsfornecedor) {
-        String valor = String.valueOf(mbsfornecedor.getMbsIdFornecedor());
+        String valor = Util.intStr(mbsfornecedor.getMbsIdFornecedor());
         jTxtCodigo.setText(valor);
         jTxtNome.setText(mbsfornecedor.getMbsNome());
         jFmtTelefone.setText(mbsfornecedor.getMbsTelefone());
@@ -502,8 +502,7 @@ public class jDlgMbsFornecedor extends javax.swing.JDialog {
         // TODO add your handling code here:
         Util.habilitar(false, jTxtCodigo, jTxtNome, jFmtTelefone, jTxtEmail, jFmtCnpj, jTxtEndereco, jTxtGarantia, jTxtPais, jTxtCidade, jTxtEstado, jTxtRamoAtuacao, jFmtDatadeCadastro, jChbAtivo, jTxtObservacoes, jFmtCep);
         Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
-        jBtnPesquisar.setEnabled(true);
-        jBtnIncluir.setEnabled(true);
+
 
         limparCampos();
     }//GEN-LAST:event_jBtnCancelarActionPerformed
@@ -544,10 +543,8 @@ public class jDlgMbsFornecedor extends javax.swing.JDialog {
             );
         }
         limparCampos();
-
-        jBtnConfirmar.setEnabled(false);
-        jBtnAlterar.setEnabled(true);
-        jBtnPesquisar.setEnabled(true);
+        Util.habilitar(false, jBtnConfirmar, jBtnCancelar, jTxtCodigo, jTxtNome, jFmtTelefone, jTxtEmail, jFmtCnpj, jTxtEndereco, jTxtGarantia, jTxtPais, jTxtCidade, jTxtEstado, jTxtRamoAtuacao, jFmtDatadeCadastro, jChbAtivo, jTxtObservacoes, jFmtCep);
+        Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
     }//GEN-LAST:event_jBtnExcluirActionPerformed
 
     private void jTxtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCodigoActionPerformed

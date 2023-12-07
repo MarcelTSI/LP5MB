@@ -40,7 +40,6 @@ public class jDlgMbsUsuarios extends javax.swing.JDialog {
         Util.habilitar(false, jTxtCodigo, jTxtNome, jTxtApelido, jFmtCpf, jFmtDatadeNascimento, jPwfSenha, jCboNivel, jChbAtivo, jBtnConfirmar, jBtnCancelar);
         setTitle("Cadastro de usuários");
         setLocationRelativeTo(null);
-        setTitle("Usuários");
         Util.limparCampos(jTxtCodigo, jTxtNome, jTxtApelido, jFmtCpf, jFmtDatadeNascimento, jPwfSenha, jCboNivel, jChbAtivo);
         try {
             mascaraCpf = new MaskFormatter("###.###.###-##");
@@ -375,16 +374,24 @@ public class jDlgMbsUsuarios extends javax.swing.JDialog {
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
         Util.habilitar(true, jTxtCodigo, jTxtNome, jTxtApelido, jFmtCpf, jFmtDatadeNascimento, jPwfSenha, jCboNivel, jChbAtivo, jBtnConfirmar, jBtnCancelar);
         Util.habilitar(false, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
-        if (Util.perguntar("Deseja excluir o registro?")) {
-            mbsUsuarios = viewBean();
-            mbsUsuarioDAO.delete(mbsUsuarios);
+        int resp = JOptionPane.showConfirmDialog(null, "Deseja excluir o registro",
+                "confirmar", JOptionPane.YES_NO_OPTION);
+        if (resp == JOptionPane.YES_OPTION) {
+            MbsUsuarios mbsusuarios = viewBean();
+            MbsUsuariosDAO usuariosDAO = new MbsUsuariosDAO();
+            usuariosDAO.delete(mbsusuarios);
+            Util.habilitar(false, jTxtCodigo, jTxtNome, jTxtApelido, jFmtCpf, jFmtDatadeNascimento, jPwfSenha, jCboNivel, jChbAtivo, jBtnConfirmar, jBtnCancelar);
+        Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
 
-            Util.mensagem("Registro excluído com sucesso.");
         } else {
-            Util.mensagem("Exclusão cancelada.");
+            JOptionPane.showMessageDialog(null, "Exclusão cancelada ",
+                    "alerta", 2
+            );
         }
         Util.limparCampos(jTxtCodigo, jTxtNome, jTxtApelido, jFmtCpf, jFmtDatadeNascimento, jPwfSenha, jCboNivel, jChbAtivo);
-        
+        Util.habilitar(false, jTxtCodigo, jTxtNome, jTxtApelido, jFmtCpf, jFmtDatadeNascimento, jPwfSenha, jCboNivel, jChbAtivo, jBtnConfirmar, jBtnCancelar);
+        Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
+
 
     }//GEN-LAST:event_jBtnExcluirActionPerformed
 

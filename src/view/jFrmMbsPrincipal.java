@@ -4,6 +4,7 @@
  */
 package view;
 
+import query.jDlgMbsConsultaCompra;
 import query.jDlgMbsConsultaFornecedor;
 import query.jDlgMbsConsultaFuncionario;
 import query.jDlgMbsConsultaProduto;
@@ -20,8 +21,9 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
      */
     public jFrmMbsPrincipal() {
         initComponents();
-        setTitle("Sistema de Compras e Vendas de Instrumentos Musicais");
+        setTitle("Sistema de Compras de Instrumentos Musicais");
         setExtendedState(MAXIMIZED_BOTH);
+
     }
 
     /**
@@ -95,7 +97,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jMnuFornecedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMnuFornecedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMnuFornecedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/fornecedores.png"))); // NOI18N
         jMnuFornecedores.setText("Fornecedores ");
         jMnuFornecedores.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +107,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuPrincipal.add(jMnuFornecedores);
 
-        jMnuFuncionarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMnuFuncionarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMnuFuncionarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/funcionarios.png"))); // NOI18N
         jMnuFuncionarios.setText("Funcionarios");
         jMnuFuncionarios.addActionListener(new java.awt.event.ActionListener() {
@@ -115,7 +117,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuPrincipal.add(jMnuFuncionarios);
 
-        jMnuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMnuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         jMnuProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/produtos_2.png"))); // NOI18N
         jMnuProdutos.setText("Produtos");
         jMnuProdutos.addActionListener(new java.awt.event.ActionListener() {
@@ -125,7 +127,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuPrincipal.add(jMnuProdutos);
 
-        jMnuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMnuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         jMnuUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/usuarios.png"))); // NOI18N
         jMnuUsuarios.setText("Usuários");
         jMnuUsuarios.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +138,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         jMnuPrincipal.add(jMnuUsuarios);
         jMnuPrincipal.add(jSeparator1);
 
-        jMnuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMnuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMnuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/sair.png"))); // NOI18N
         jMnuSair.setText("Sair");
         jMnuSair.addActionListener(new java.awt.event.ActionListener() {
@@ -150,7 +152,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
 
         jMnuMovimento.setText("Movimento");
 
-        jMnuCompras.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMnuCompras.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMnuCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/compras.png"))); // NOI18N
         jMnuCompras.setText("Compras");
         jMnuCompras.addActionListener(new java.awt.event.ActionListener() {
@@ -164,6 +166,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
 
         jMnuConsultas.setText("Consultas");
 
+        jMnuUsuariosConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/usuarios.png"))); // NOI18N
         jMnuUsuariosConsulta.setText("Usuarios");
         jMnuUsuariosConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +175,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuConsultas.add(jMnuUsuariosConsulta);
 
+        jMnuProdutoConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/produtos_2.png"))); // NOI18N
         jMnuProdutoConsulta.setText("Produto");
         jMnuProdutoConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,6 +184,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuConsultas.add(jMnuProdutoConsulta);
 
+        jMnuFuncionarioConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/funcionarios.png"))); // NOI18N
         jMnuFuncionarioConsulta.setText("Funcionario");
         jMnuFuncionarioConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,6 +193,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuConsultas.add(jMnuFuncionarioConsulta);
 
+        jMnuFornecedorConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/fornecedores.png"))); // NOI18N
         jMnuFornecedorConsulta.setText("Fornecedor");
         jMnuFornecedorConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,6 +202,7 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
         });
         jMnuConsultas.add(jMnuFornecedorConsulta);
 
+        jMnuComprasConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/compras.png"))); // NOI18N
         jMnuComprasConsulta.setText("Compras");
         jMnuComprasConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -309,7 +316,8 @@ public class jFrmMbsPrincipal extends javax.swing.JFrame {
 
     private void jMnuComprasConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuComprasConsultaActionPerformed
         // TODO add your handling code here:
-
+        jDlgMbsConsultaCompra jDlgMbsConsultaCompra = new jDlgMbsConsultaCompra(null, true);
+        jDlgMbsConsultaCompra.setVisible(true);
     }//GEN-LAST:event_jMnuComprasConsultaActionPerformed
 
     /**

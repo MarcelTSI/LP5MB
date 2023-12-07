@@ -109,4 +109,21 @@ public class MbsProduto  implements java.io.Serializable {
         this.mbsTipo = mbsTipo;
     }
 
+    @Override
+    public String toString() {
+        return mbsNome; //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof MbsProduto) {
+            MbsProduto mbsProduto = (MbsProduto) object;
+            if (this.getMbsIdProduto()== mbsProduto.getMbsIdProduto()) {
+                return true;
+            }
+        }
+        return false;
+    }   
+
+    
+    
 }

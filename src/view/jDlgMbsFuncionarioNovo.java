@@ -22,6 +22,7 @@ public class jDlgMbsFuncionarioNovo extends javax.swing.JDialog {
     MbsFuncionario mbsFuncionario;
     MbsFuncionarioControle mbsFuncionarioControle;
     private jDlgMbsFuncionarioNovoIA jDlgMbsFuncionarioNovoIA;
+
     /**
      * Creates new form JDlgUsuariosNovo
      */
@@ -30,13 +31,13 @@ public class jDlgMbsFuncionarioNovo extends javax.swing.JDialog {
         initComponents();
         setTitle("Cadastro de Funcionarios");
         setLocationRelativeTo(null);
-    
-    jDlgMbsFuncionarioNovoIA = new jDlgMbsFuncionarioNovoIA(null, true);
-    mbsFuncionarioControle = new MbsFuncionarioControle();
-    mbsFuncionarioDAO = new MbsFuncionarioDAO();
-    List lista = mbsFuncionarioDAO.listAll();
-    mbsFuncionarioControle.setList(lista);
-    jTblCadastro.setModel(mbsFuncionarioControle);
+
+        jDlgMbsFuncionarioNovoIA = new jDlgMbsFuncionarioNovoIA(null, true);
+        mbsFuncionarioControle = new MbsFuncionarioControle();
+        mbsFuncionarioDAO = new MbsFuncionarioDAO();
+        List lista = mbsFuncionarioDAO.listAll();
+        mbsFuncionarioControle.setList(lista);
+        jTblCadastro.setModel(mbsFuncionarioControle);
 
     }
 
@@ -128,19 +129,33 @@ public class jDlgMbsFuncionarioNovo extends javax.swing.JDialog {
 
     private void jBtnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIncluirActionPerformed
         // TODO add your handling code here:
-        jDlgMbsFuncionarioNovoIA.setTitle("Inclusão");
-        jDlgMbsFuncionarioNovoIA.setVisible(true);
+        
+      
+        jDlgMbsFuncionarioNovoIA.setIncluindo(true);
+        jDlgMbsFuncionarioNovoIA.setTelaAnterior(this);
+        jDlgMbsFuncionarioNovoIA.setVisible(true);  
     }//GEN-LAST:event_jBtnIncluirActionPerformed
 
     private void jBtnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAlterarActionPerformed
         // TODO add your handling code here:
-        jDlgMbsFuncionarioNovoIA.setTitle("Alteração");
+     int rowSel = jTblCadastro.getSelectedRow();
+     if (rowSel != -1) {
+        MbsFuncionario mbsFuncionario = mbsFuncionarioControle.getBean(rowSel);
+
+        
+        jDlgMbsFuncionarioNovoIA.setIncluindo(false);
+        jDlgMbsFuncionarioNovoIA.beanView(mbsFuncionario);
+        jDlgMbsFuncionarioNovoIA.setTelaAnterior(this);
         jDlgMbsFuncionarioNovoIA.setVisible(true);
+
+     } else {
+            Util.mensagem("Selecione um Registro!.");
+        }
     }//GEN-LAST:event_jBtnAlterarActionPerformed
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
         // TODO add your handling code here:
-        if (Util.perguntar("Deseja excluir o registro?")) {
+        if (Util.perguntar("Deseja excluir?")) {
             int sel = jTblCadastro.getSelectedRow();
             mbsFuncionario = mbsFuncionarioControle.getBean(sel);
             mbsFuncionarioDAO.delete(mbsFuncionario);

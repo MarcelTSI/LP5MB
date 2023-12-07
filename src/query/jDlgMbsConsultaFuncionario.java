@@ -24,7 +24,7 @@ public class jDlgMbsConsultaFuncionario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("Consulta de Funcionários ");
+        setTitle("Consulta de Funcionários");
         mbsFuncionarioControle = new MbsFuncionarioControle();
         mbsFuncionarioDAO = new MbsFuncionarioDAO();
         List lista = mbsFuncionarioDAO.listAll();

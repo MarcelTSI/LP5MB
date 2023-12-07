@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 /**
  *
- * @author Junior
+ * @author marcel
  */
     public class MbsCompraControle extends AbstractTableModel{
 
@@ -33,7 +33,7 @@ import javax.swing.table.AbstractTableModel;
 
         @Override
         public int getColumnCount() {
-            return 4;
+            return 5;
         }
     
 
@@ -51,6 +51,9 @@ import javax.swing.table.AbstractTableModel;
             if( columnIndex == 3){
                 return mbscompra.getMbsPrecoCompra();
             }
+            if( columnIndex == 4){
+                return mbscompra.getMbsDataCompra();
+            }
             return "";
         }
     
@@ -67,6 +70,9 @@ import javax.swing.table.AbstractTableModel;
             }
             if( column == 3){
                 return "Preço Compra";
+            }
+            if( column == 4){
+                return "Data Compra";
             }
             return "";
         }

@@ -67,7 +67,16 @@ public class MbsFornecedor  implements java.io.Serializable {
         return getMbsNome(); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
+        @Override
+    public boolean equals(Object object) {
+        if (object instanceof MbsFornecedor) {
+            MbsFornecedor mbsFornecedor = (MbsFornecedor) object;
+            if (this.getMbsIdFornecedor()== mbsFornecedor.getMbsIdFornecedor()) {
+                return true;
+            }
+        }
+        return false;
+    }  
     
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -221,6 +230,8 @@ public class MbsFornecedor  implements java.io.Serializable {
     public void setMbsCep(String mbsCep) {
         this.mbsCep = mbsCep;
     }
+    
+    
 
 }
 

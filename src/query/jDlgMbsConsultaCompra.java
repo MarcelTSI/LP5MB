@@ -11,7 +11,13 @@ import bean.MbsFornecedor;
 import controle.MbsCompraControle;
 import dao.MbsCompraDAO;
 import dao.MbsFornecedorDAO;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import tools.Util;
 import view.jDlgMbsCompra;
 
@@ -24,6 +30,7 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
     private jDlgMbsCompra jDlgMbsCompra;
     private MbsCompraControle mbsCompraControle;
     private MbsCompraDAO mbsCompraDAO;
+    MaskFormatter mascaraData;
     /**
      * Creates new form jDlgConsultaUsuarios
      */
@@ -31,18 +38,23 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("Consulta de Clientes");
+        
+        
+         try {
+
+            mascaraData = new MaskFormatter("##/##/####");        
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(jDlgMbsConsultaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jFmtData.setFormatterFactory(new DefaultFormatterFactory(mascaraData));
+        setTitle("Consulta de Compras");
         mbsCompraControle = new MbsCompraControle();
         mbsCompraDAO = new MbsCompraDAO();
         List lista = mbsCompraDAO.listAll();
         mbsCompraControle.setList(lista);
-        jTblTabelaColsulta.setModel(mbsCompraControle);
-        
-        MbsFornecedorDAO mbsFornecedorDAO = new MbsFornecedorDAO();
-        List listaFo = mbsFornecedorDAO.listAll();
-        for (int i = 0; i < listaFo.size(); i++) {
-            jCboFornecedor.addItem((MbsFornecedor) listaFo.get(i));
-        }
+        jTblTabelaConsulta.setModel(mbsCompraControle);
+
     }
     
     /**
@@ -59,15 +71,15 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
         jTxtPrecoCompra = new javax.swing.JTextField();
         jBtnConsultar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jCboFornecedor = new javax.swing.JComboBox<MbsFornecedor>();
+        jFmtData = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTblTabelaColsulta = new javax.swing.JTable();
+        jTblTabelaConsulta = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel1.setText("Fornecedor");
+        jLabel1.setText("Data da Compra");
 
         jTxtPrecoCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,9 +96,9 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
 
         jLabel2.setText("Preço Compra");
 
-        jCboFornecedor.addActionListener(new java.awt.event.ActionListener() {
+        jFmtData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCboFornecedorActionPerformed(evt);
+                jFmtDataActionPerformed(evt);
             }
         });
 
@@ -97,15 +109,15 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCboFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(56, 56, 56)
+                    .addComponent(jLabel1)
+                    .addComponent(jFmtData, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(91, 91, 91)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTxtPrecoCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                        .addComponent(jTxtPrecoCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jBtnConsultar)
                         .addGap(27, 27, 27))))
@@ -121,28 +133,17 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTxtPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtnConsultar)
-                    .addComponent(jCboFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFmtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jTblTabelaColsulta.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ID", "Nome", "Data Cadastro", "E-mail"
-            }
-        ));
-        jScrollPane1.setViewportView(jTblTabelaColsulta);
+        jScrollPane1.setViewportView(jTblTabelaConsulta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -158,21 +159,21 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnConsultarActionPerformed
-        if (jCboFornecedor.getSelectedItem() == null && jTxtPrecoCompra.getText().equals("")) {
+        if (jFmtData.getText().equals("  /  /    ") && jTxtPrecoCompra.getText().equals("")) {
             List lista = mbsCompraDAO.listAll();
             mbsCompraControle.setList(lista);
         } else {
-            if (jCboFornecedor.getSelectedItem() != null && !jTxtPrecoCompra.getText().equals("")) {
-                MbsFornecedor mbsFornecedor = (MbsFornecedor) jCboFornecedor.getSelectedItem();
-                double valor = Util.strDouble(jTxtPrecoCompra.getText());
-                jTxtPrecoCompra.setText(String.valueOf(valor));
-                List lista = mbsCompraDAO.listFornecedorPreco(mbsFornecedor.getMbsIdFornecedor(), valor);
+            if (!jFmtData.getText().equals("  /  /    ") && !jTxtPrecoCompra.getText().equals("")) {
+                Date data = Util.StrDate(jFmtData.getText());
+                double preco = Util.strDouble(jTxtPrecoCompra.getText());
+                jTxtPrecoCompra.setText(String.valueOf(preco));
+                List lista = mbsCompraDAO.listDataPreco(data , preco);
                 mbsCompraControle.setList(lista);
             } else {
-                if (jCboFornecedor.getSelectedItem() != null) {
-                    MbsFornecedor mbsFornecedor = (MbsFornecedor) jCboFornecedor.getSelectedItem();
-                    List lista = mbsCompraDAO.listFornecedor(mbsFornecedor.getMbsIdFornecedor());
-                    mbsCompraControle.setList(lista);
+                if ((!jFmtData.getText().equals("  /  /    "))) {
+                Date data = Util.StrDate(jFmtData.getText());
+                List lista = mbsCompraDAO.listData(data);
+                mbsCompraControle.setList(lista);
                 }
                 if (!jTxtPrecoCompra.getText().equals("")) {
                     double preco = Util.strDouble(jTxtPrecoCompra.getText());
@@ -188,9 +189,9 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTxtPrecoCompraActionPerformed
 
-    private void jCboFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCboFornecedorActionPerformed
+    private void jFmtDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFmtDataActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCboFornecedorActionPerformed
+    }//GEN-LAST:event_jFmtDataActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,12 +252,12 @@ public class jDlgMbsConsultaCompra extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnConsultar;
-    private javax.swing.JComboBox<MbsFornecedor> jCboFornecedor;
+    private javax.swing.JFormattedTextField jFmtData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTblTabelaColsulta;
+    private javax.swing.JTable jTblTabelaConsulta;
     private javax.swing.JTextField jTxtPrecoCompra;
     // End of variables declaration//GEN-END:variables
 }

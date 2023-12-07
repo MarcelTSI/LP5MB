@@ -6,13 +6,17 @@
 package view;
 
 import bean.MbsCompra;
+import bean.MbsCompraProduto;
 import bean.MbsFornecedor;
 import bean.MbsFuncionario;
 import controle.MbsCompraControle;
+import controle.MbsCompraProdutoControle;
 import dao.MbsCompraDAO;
+import dao.MbsCompraProdutoDAO;
 import dao.MbsFornecedorDAO;
 import dao.MbsFuncionarioDAO;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,22 +34,28 @@ public class jDlgMbsCompra extends javax.swing.JDialog {
     /**
      * Creates new form jDlgMbsPedidosProdutos
      */
-    
     private boolean incluindo;
     MaskFormatter mascaraMbsDataCompra;
-    
+
     public MbsCompra mbsCompra = new MbsCompra();
     public MbsCompraDAO mbsCompraDAO = new MbsCompraDAO();
+    public MbsCompraProduto mbsCompraProduto = new MbsCompraProduto();
+    public MbsCompraProdutoDAO mbsCompraProdutoDAO = new MbsCompraProdutoDAO();
     public MbsCompraControle mbsCompraControle = new MbsCompraControle();
-    
-    
+    public MbsCompraProdutoControle mbsCompraProdutoControle = new MbsCompraProdutoControle();
+
     public jDlgMbsCompra(java.awt.Frame parent, boolean modal) {
-super(parent, modal);
+        super(parent, modal);
         initComponents();
-        Util.habilitar(false, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar);
+        setTitle("Tela de Compras");
+        List lista = new ArrayList();
+        Util.habilitar(false, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar,jBtnIncluirProd, jBtnExcluirProd, jBtnAlterarProd);
         Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
         setLocationRelativeTo(null);
-        
+        List listaprod = mbsCompraProdutoDAO.listAll();
+        mbsCompraProdutoControle.setList(lista);
+        jTable1.setModel(mbsCompraProdutoControle);
+
         MbsFornecedorDAO mbsFornecedorDAO = new MbsFornecedorDAO();
         List listaFor = mbsFornecedorDAO.listAll();
         for (int i = 0; i < listaFor.size(); i++) {
@@ -63,50 +73,50 @@ super(parent, modal);
             Logger.getLogger(jDlgMbsUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
         jFmtData.setFormatterFactory(new DefaultFormatterFactory(mascaraMbsDataCompra));
+
     }
-    
-        public void limparCampos() {
-        jTxtTotal.setText("");
-        jTxtQuantidade.setText("");
-        jTxtCompra.setText("");
-        jFmtData.setText("");
-        jCboFornecedor.setSelectedItem(null);
-        jCboFuncionario.setSelectedItem(null);
+
+    public int getSelectedRowProd() {
+        return jTable1.getSelectedRow();
     }
-    
+
     public MbsCompra viewBean() {
-        
+
         MbsCompra mbscompra = new MbsCompra();
-        Util.strInt(jTxtCompra.getText());
+        int id = Util.strInt(jTxtCompra.getText());
+        mbscompra.setMbsIdCompra(id);
         Date datacomp = Util.StrDate(jFmtData.getText());
         mbscompra.setMbsDataCompra(datacomp);
         mbscompra.setMbsFornecedor((MbsFornecedor) jCboFornecedor.getSelectedItem());
         mbscompra.setMbsFuncionario((MbsFuncionario) jCboFuncionario.getSelectedItem());
         mbscompra.setMbsQuantidadeCompra(Util.strInt(jTxtQuantidade.getText()));
-        mbscompra.setMbsPrecoCompra(Util.strInt(jTxtCompra.getText()));
-        
-        return mbsCompra;
+        mbscompra.setMbsPrecoCompra(Util.strDouble(jTxtTotal.getText()));
 
+        return mbscompra;
 
     }
-    
+
     public void beanView(MbsCompra mbsCompra) {
-        
-        jTxtCompra.setText(Util.intStr(mbsCompra.getMbsIdCompra()));    
+
+        String id = Util.intStr(mbsCompra.getMbsIdCompra());
+        jTxtCompra.setText(id);
         String datecomp = Util.dateStr(mbsCompra.getMbsDataCompra());
-        jFmtData.setText(datecomp);     
+        jFmtData.setText(datecomp);
         jCboFornecedor.setSelectedItem(mbsCompra.getMbsFornecedor());
         jCboFuncionario.setSelectedItem(mbsCompra.getMbsFuncionario());
         jTxtQuantidade.setText(Util.intStr(mbsCompra.getMbsQuantidadeCompra()));
         jTxtTotal.setText(Util.doubleStr((mbsCompra.getMbsPrecoCompra())));
+
+        MbsCompraProdutoDAO mbsCompraProdutoDAO = new MbsCompraProdutoDAO();
+        List listaProd = (List) mbsCompraProdutoDAO.listProduto(mbsCompra);
+
+        mbsCompraProdutoControle.setList(listaProd);
     }
-    
+
     /**
      *
      * @return
      */
-
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,6 +161,12 @@ super(parent, modal);
         jLabel4.setText("Funcionario");
 
         jLabel5.setText("Preço Compra");
+
+        jTxtCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTxtCompraActionPerformed(evt);
+            }
+        });
 
         jCboFornecedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,24 +234,33 @@ super(parent, modal);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Produto", "Quantidade", "Valor Unitário", "Total"
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
-        ));
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jBtnIncluirProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/incluir_preto.png"))); // NOI18N
+        jBtnIncluirProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnIncluirProdActionPerformed(evt);
+            }
+        });
 
         jBtnAlterarProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/alterar_preto.png"))); // NOI18N
+        jBtnAlterarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnAlterarProdActionPerformed(evt);
+            }
+        });
 
         jBtnExcluirProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/excluir_preto.png"))); // NOI18N
+        jBtnExcluirProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnExcluirProdActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Quantidade Compra");
 
@@ -247,8 +272,7 @@ super(parent, modal);
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jBtnIncluir)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -260,13 +284,13 @@ super(parent, modal);
                                 .addGap(18, 18, 18)
                                 .addComponent(jBtnCancelar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jBtnPesquisar)))
+                                .addComponent(jBtnPesquisar))
+                            .addComponent(jScrollPane1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jBtnIncluirProd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jBtnAlterarProd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jBtnExcluirProd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
+                            .addComponent(jBtnExcluirProd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTxtCompra)
@@ -328,7 +352,7 @@ super(parent, modal);
                         .addComponent(jBtnAlterarProd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBtnExcluirProd)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnIncluir)
                     .addComponent(jBtnAlterar)
@@ -344,7 +368,7 @@ super(parent, modal);
 
     private void jCboFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCboFornecedorActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jCboFornecedorActionPerformed
 
     private void jBtnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnPesquisarActionPerformed
@@ -356,55 +380,79 @@ super(parent, modal);
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
         // TODO add your handling code here:
-        if (Util.perguntar("Deseja excluir o registro?")) {
-            mbsCompra = viewBean();
-            mbsCompraDAO.delete(mbsCompra);
-
-            Util.mensagem("Registro excluído com sucesso.");
-        } else {
-            Util.mensagem("Exclusão cancelada.");
+        if (mbsCompra != null) {
+            if (Util.perguntar("Deseja excluir a Compra?") == true) {
+                MbsCompraProdutoDAO mbsCompraProdutoDAO = new MbsCompraProdutoDAO();
+                MbsCompraProduto mbsCompraProduto;
+                for (int linha = 0; linha < jTable1.getRowCount(); linha++) {
+                    mbsCompraProduto = mbsCompraProdutoControle.getBean(linha);
+                    mbsCompraProdutoDAO.delete(mbsCompraProduto);
+                }
+                mbsCompraProdutoDAO.delete(mbsCompra);
+            } else {
+                Util.mensagem("Deve ser realizada uma pesquisa antes");
+            }
+            Util.limparCampos(jTxtCompra, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jTxtTotal, jBtnConfirmar, jBtnCancelar);
+            mbsCompraProdutoControle.setList(new ArrayList());
         }
-        limparCampos();
+
     }//GEN-LAST:event_jBtnExcluirActionPerformed
 
     private void jBtnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnConfirmarActionPerformed
         // TODO add your handling code here:
-        MbsCompra mbscompra = viewBean();
-        MbsCompraDAO compraDAO = new MbsCompraDAO();
+        mbsCompra = viewBean();
         if (incluindo == true) {
-            compraDAO.insert(mbscompra);
+            mbsCompraDAO.insert(mbsCompra);
+            MbsCompraProdutoDAO mbsCompraProdutoDAO = new MbsCompraProdutoDAO();
+            MbsCompraProduto mbsCompraProduto;
+            for (int linha = 0; linha < jTable1.getRowCount(); linha++) {
+                mbsCompraProduto = mbsCompraProdutoControle.getBean(linha);
+                mbsCompraProduto.setMbsCompra(mbsCompra);
+                mbsCompraProdutoDAO.insert(mbsCompraProduto);
+            }
         } else {
-            compraDAO.update(mbscompra);
+           mbsCompraDAO.update(mbsCompra);
+            List<MbsCompraProduto> produtosDaVenda = mbsCompraProdutoDAO.listProduto(mbsCompra);           
+            for (MbsCompraProduto produto : produtosDaVenda) {
+                mbsCompraProdutoDAO.delete(produto);
+            }            
+            for (int linha = 0; linha < jTable1.getRowCount(); linha++) {
+                mbsCompraProduto = mbsCompraProdutoControle.getBean(linha);
+                mbsCompraProduto.setMbsCompra(mbsCompra);
+                mbsCompraProdutoDAO.insert(mbsCompraProduto);
+
         }
-        Util.habilitar(false, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar);
+            }
+        mbsCompraProdutoControle.setList(new ArrayList());
+        Util.habilitar(false, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar,jBtnIncluirProd, jBtnExcluirProd, jBtnAlterarProd);
         Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
-        limparCampos();
+        Util.limparCampos(jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade);
+        
     }//GEN-LAST:event_jBtnConfirmarActionPerformed
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         // TODO add your handling code here:
-        Util.habilitar(false, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar);
+        Util.habilitar(false, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar,jBtnIncluirProd, jBtnExcluirProd, jBtnAlterarProd);
         Util.habilitar(true, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
-        jBtnPesquisar.setEnabled(true);
-        jBtnIncluir.setEnabled(true);
-
-        limparCampos();
+        Util.mensagem("Cancelado com sucesso!");
+        Util.limparCampos(jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade);
+        mbsCompraProdutoControle.setList(new ArrayList());
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
     private void jBtnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIncluirActionPerformed
         // TODO add your handling code here:
-        Util.habilitar(true, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar);
+        mbsCompraProdutoControle.setList(new ArrayList());
+        Util.habilitar(true, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar,jBtnIncluirProd, jBtnExcluirProd, jBtnAlterarProd);
         Util.habilitar(false, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
-        limparCampos();
+        Util.limparCampos(jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade);
         incluindo = true;
     }//GEN-LAST:event_jBtnIncluirActionPerformed
 
     private void jBtnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAlterarActionPerformed
         // TODO add your handling code here:
-        Util.habilitar(true, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar);
+        Util.habilitar(true, jTxtCompra, jTxtTotal, jFmtData, jCboFornecedor, jCboFuncionario, jTxtQuantidade, jBtnConfirmar, jBtnCancelar,jBtnIncluirProd, jBtnExcluirProd, jBtnAlterarProd);
         Util.habilitar(false, jBtnIncluir, jBtnAlterar, jBtnExcluir, jBtnPesquisar);
         incluindo = false;
-        setLocationRelativeTo(null);
     }//GEN-LAST:event_jBtnAlterarActionPerformed
 
     private void jTxtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtTotalActionPerformed
@@ -414,6 +462,60 @@ super(parent, modal);
     private void jFmtDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFmtDataActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFmtDataActionPerformed
+
+    private void jTxtCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCompraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTxtCompraActionPerformed
+
+    private void jBtnIncluirProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIncluirProdActionPerformed
+        // TODO add your handling code here:
+        jDlgMbsCompraProduto compraproduto = new jDlgMbsCompraProduto(new javax.swing.JFrame(), true);
+        compraproduto.setTitle("Inclusão");
+        compraproduto.setIncluindo(true);
+        compraproduto.setTelaAnterior(this);
+        compraproduto.setVisible(true);
+    }//GEN-LAST:event_jBtnIncluirProdActionPerformed
+
+    private void jBtnAlterarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAlterarProdActionPerformed
+        // TODO add your handling code here:
+        int rowSel = jTable1.getSelectedRow();
+        if (rowSel != -1) {
+            mbsCompraProduto = mbsCompraProdutoControle.getBean(rowSel);
+
+            jDlgMbsCompraProduto compraproduto = new jDlgMbsCompraProduto(new javax.swing.JFrame(), true);
+            compraproduto.setTitle("Alteração");
+            compraproduto.setIncluindo(false);
+            compraproduto.setTelaAnterior(this);
+            compraproduto.beanView(mbsCompraProduto);
+
+            compraproduto.setVisible(true);
+        } else {
+            Util.mensagem("Selecione um Registro para poder ser Alterado.");
+        }
+    }//GEN-LAST:event_jBtnAlterarProdActionPerformed
+
+    private void jBtnExcluirProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirProdActionPerformed
+        // TODO add your handling code here:
+        MbsCompraProdutoControle mbsCompraProdutoControle = new MbsCompraProdutoControle();
+        int linha = jTable1.getSelectedRow();
+        if (linha == -1) {
+            Util.mensagem("Selecione uma linha para oder Excluir");
+        } else {
+            if (Util.perguntar("Deseja Confirmar a Exclusão do Produto") == true) {
+                mbsCompraProdutoControle.removeBean(linha);
+            }
+        }
+        Util.mensagem("Produto Excluido com Sucesso");
+        ((MbsCompraProdutoControle) jTable1.getModel()).removeBean(linha);
+
+    }//GEN-LAST:event_jBtnExcluirProdActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount() == 2){
+            jBtnConfirmarActionPerformed(null);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments

@@ -8,9 +8,15 @@ package query;
 import controle.MbsFornecedorControle;
 import dao.MbsFornecedorDAO;
 import bean.MbsFornecedor;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import tools.Util;
+
 /**
  *
  * @author marcelbenitezdasilva
@@ -23,12 +29,26 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
     public MbsFornecedor mbsFornecedor = new MbsFornecedor();
     public MbsFornecedorDAO mbsFornecedorDAO = new MbsFornecedorDAO();
     public MbsFornecedorControle mbsFornecedorControle = new MbsFornecedorControle();
+    MaskFormatter mascaraData;
 
     
     public jDlgMbsConsultaFornecedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("Consulta de Fornecedores");
+
         setLocationRelativeTo(null);
+        
+         try {
+
+            mascaraData = new MaskFormatter("##/##/####");        
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(jDlgMbsConsultaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jFmtData.setFormatterFactory(new DefaultFormatterFactory(mascaraData));
+        
+        
         mbsFornecedorControle = new MbsFornecedorControle();
         mbsFornecedorDAO = new MbsFornecedorDAO();
         List lista = mbsFornecedorDAO.listAll();
@@ -51,7 +71,7 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
         jTxtNome = new javax.swing.JTextField();
         jBtnConsultar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jFmtDataCadastro = new javax.swing.JFormattedTextField();
+        jFmtData = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -76,9 +96,9 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
 
         jLabel2.setText("Data de Cadastro");
 
-        jFmtDataCadastro.addActionListener(new java.awt.event.ActionListener() {
+        jFmtData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFmtDataCadastroActionPerformed(evt);
+                jFmtDataActionPerformed(evt);
             }
         });
 
@@ -94,7 +114,7 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jFmtDataCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jFmtData, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jBtnConsultar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -113,7 +133,7 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTxtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtnConsultar)
-                    .addComponent(jFmtDataCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFmtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25))
         );
 
@@ -159,12 +179,12 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
     private void jBtnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnConsultarActionPerformed
         // TODO add your handling code here:
 
-        if (jTxtNome.getText().equals("") && jFmtDataCadastro.getText().equals("")) {
+        if (jTxtNome.getText().equals("") && jFmtData.getText().equals("  /  /    ")) {
     List lista = mbsFornecedorDAO.listAll();
     mbsFornecedorControle.setList(lista);
     } else {
-    if (!jTxtNome.getText().equals("") && !jFmtDataCadastro.getText().equals("")) {
-        Date data = Util.StrDate(jFmtDataCadastro.getText());
+    if (!jTxtNome.getText().equals("") && !jFmtData.getText().equals("  /  /    ")) {
+        Date data = Util.StrDate(jFmtData.getText());
         List lista = mbsFornecedorDAO.listNomeData(jTxtNome.getText(), data);
         mbsFornecedorControle.setList(lista);
     } else {
@@ -172,9 +192,9 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
             List lista = mbsFornecedorDAO.listNome(jTxtNome.getText());
             mbsFornecedorControle.setList(lista);
         }
-        if (!jFmtDataCadastro.getText().equals("")) {
+        if (!jFmtData.getText().equals("  /  /    ")) {
             // Remova a conversão para double, utilize diretamente o método StrDate
-            Date data = Util.StrDate(jFmtDataCadastro.getText());
+            Date data = Util.StrDate(jFmtData.getText());
             List lista = mbsFornecedorDAO.listData(data);
             mbsFornecedorControle.setList(lista);
         }
@@ -185,9 +205,9 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jBtnConsultarActionPerformed
 
-    private void jFmtDataCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFmtDataCadastroActionPerformed
+    private void jFmtDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFmtDataActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFmtDataCadastroActionPerformed
+    }//GEN-LAST:event_jFmtDataActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,7 +256,7 @@ public class jDlgMbsConsultaFornecedor extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnConsultar;
-    private javax.swing.JFormattedTextField jFmtDataCadastro;
+    private javax.swing.JFormattedTextField jFmtData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

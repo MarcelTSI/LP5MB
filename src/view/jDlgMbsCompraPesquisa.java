@@ -5,6 +5,11 @@
  */
 package view;
 
+import bean.MbsCompra;
+import controle.MbsCompraControle;
+import dao.MbsCompraDAO;
+import java.util.List;
+
 
 
 /**
@@ -13,6 +18,9 @@ package view;
  */
 public class jDlgMbsCompraPesquisa extends javax.swing.JDialog {
     
+    public MbsCompra mbsCompra = new MbsCompra();
+    public MbsCompraDAO mbsCompraDAO = new MbsCompraDAO();
+    public MbsCompraControle mbsCompraControle = new MbsCompraControle();    
     private jDlgMbsCompra jDlgMbsCompra;
     /**
      * Creates new form jDlgMbsPedidosPesquisa
@@ -20,8 +28,14 @@ public class jDlgMbsCompraPesquisa extends javax.swing.JDialog {
     public jDlgMbsCompraPesquisa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setTitle("Pedidos Pesquisa");
+        setTitle("Compra Pesquisa");
         setLocationRelativeTo(null);
+        mbsCompraControle = new MbsCompraControle();
+        mbsCompraDAO = new MbsCompraDAO();
+        List lista = mbsCompraDAO.listAll();
+        mbsCompraControle.setList(lista);
+        jTable1.setModel(mbsCompraControle);
+        
     }
     
     public void setTelaAnterior(jDlgMbsCompra jDlgMbsCompra){
@@ -72,6 +86,11 @@ public class jDlgMbsCompraPesquisa extends javax.swing.JDialog {
 
         jBtnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancelar_preto.png"))); // NOI18N
         jBtnCancelar.setText("Cancelar");
+        jBtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,7 +106,7 @@ public class jDlgMbsCompraPesquisa extends javax.swing.JDialog {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnOk)
                     .addComponent(jBtnCancelar))
@@ -114,7 +133,17 @@ public class jDlgMbsCompraPesquisa extends javax.swing.JDialog {
 
     private void jBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOkActionPerformed
         // TODO add your handling code here:
+        int rowSel = jTable1.getSelectedRow();
+        mbsCompra = mbsCompraControle.getBean(rowSel);
+        jDlgMbsCompra.beanView(mbsCompra);
+        setVisible(false);
+        setTelaAnterior(jDlgMbsCompra);
     }//GEN-LAST:event_jBtnOkActionPerformed
+
+    private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+    }//GEN-LAST:event_jBtnCancelarActionPerformed
 
     /**
      * @param args the command line arguments

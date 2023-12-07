@@ -85,6 +85,17 @@ public class MbsFuncionario  implements java.io.Serializable {
     public String toString() {
         return mbsNome;
     }
+    
+            @Override
+    public boolean equals(Object object) {
+        if (object instanceof MbsFuncionario) {
+            MbsFuncionario mbsFuncionario = (MbsFuncionario) object;
+            if (this.getMbsIdFuncionario()== mbsFuncionario.getMbsIdFuncionario()) {
+                return true;
+            }
+        }
+        return false;
+    }  
 
     
 

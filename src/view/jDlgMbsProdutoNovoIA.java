@@ -8,7 +8,11 @@ package view;
 import bean.MbsProduto;
 import controle.MbsProdutoControle;
 import dao.MbsProdutoDAO;
+import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.MaskFormatter;
 import tools.Util;
 
 /**
@@ -16,7 +20,7 @@ import tools.Util;
  * @author marcel
  */
 public class jDlgMbsProdutoNovoIA extends javax.swing.JDialog {
-    
+    private boolean incluindo;
     jDlgMbsProdutoNovo jDlgMbsProdutoNovo;
     MbsProdutoDAO mbsProdutoDAO;
     MbsProduto mbsProduto;
@@ -28,8 +32,14 @@ public class jDlgMbsProdutoNovoIA extends javax.swing.JDialog {
     public jDlgMbsProdutoNovoIA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setTitle("Inclusão");
+        setTitle("IA Produto");
+        if (incluindo) {
+            setTitle("Inclusão");
+        } else {
+            setTitle("Alteração");
+        }
         setLocationRelativeTo(null);
+    
     }
     
        public MbsProduto viewBean() {
@@ -55,9 +65,18 @@ public class jDlgMbsProdutoNovoIA extends javax.swing.JDialog {
                      
        }
        
-       public void setTelaAnterior(jDlgMbsProdutoNovo jdlgMbsProdutoNovo){
+       public void setTelaAnterior(jDlgMbsProdutoNovo jDlgMbsProdutoNovo){
            this.jDlgMbsProdutoNovo = jDlgMbsProdutoNovo;      
        }
+       
+      public void setIncluindo(boolean incluindo) {
+        this.incluindo = incluindo;
+        if (incluindo) {
+            setTitle("Inclusão");
+        } else {
+            setTitle("Alteração");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -206,17 +225,28 @@ public class jDlgMbsProdutoNovoIA extends javax.swing.JDialog {
 
     private void jBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOkActionPerformed
         // TODO add your handling code here:
-        MbsProduto mbsproduto = viewBean();
+        mbsProduto = viewBean();
         mbsProdutoDAO = new MbsProdutoDAO();
-        mbsProdutoDAO.insert(mbsproduto);
-        List lista = mbsProdutoDAO.listAll();
-        jDlgMbsProdutoNovo.mbsProdutoControle.setList(lista);
-        setVisible(false);
+        if (incluindo) {
+            mbsProdutoDAO.insert(mbsProduto);
+            Util.mensagem("Registro incluído com sucesso.");
+            List lista = mbsProdutoDAO.listAll();
+            jDlgMbsProdutoNovo.mbsProdutoControle.setList(lista);
+        } else {
+            mbsProdutoDAO.update(mbsProduto);
+            List lista = mbsProdutoDAO.listAll();
+            jDlgMbsProdutoNovo.mbsProdutoControle.setList(lista);
+            Util.mensagem("Registro alterado com sucesso.");
+        }
+        Util.limparCampos(jTxtID, jTxtNome, jTxtDescricao, jTxtPreco, jTxtQuantidade, jTxtTipo);
+        this.dispose();
     }//GEN-LAST:event_jBtnOkActionPerformed
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        this.dispose();
+        Util.mensagem("A ação foi cancelada!");
+        Util.limparCampos(jTxtID, jTxtNome, jTxtDescricao, jTxtPreco, jTxtQuantidade, jTxtTipo);
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
     private void jTxtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtIDActionPerformed

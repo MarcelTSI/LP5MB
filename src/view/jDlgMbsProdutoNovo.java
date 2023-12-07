@@ -22,7 +22,7 @@ public class jDlgMbsProdutoNovo extends javax.swing.JDialog {
     MbsProduto mbsproduto;
     MbsProdutoControle mbsProdutoControle;
     jDlgMbsProdutoNovoIA jDlgMbsProdutoNovoIA;
-    private jDlgMbsProdutoNovoIA jDlgMbsProdutosNovoIA;
+    
     /**
      * Creates new form JDlgUsuariosNovo
      */
@@ -31,7 +31,7 @@ public class jDlgMbsProdutoNovo extends javax.swing.JDialog {
         initComponents();
         setTitle("Cadastro de Produtos");
         setLocationRelativeTo(null);
-        jDlgMbsProdutosNovoIA = new jDlgMbsProdutoNovoIA(null, true);
+        jDlgMbsProdutoNovoIA = new jDlgMbsProdutoNovoIA(null, true);
         mbsProdutoControle = new MbsProdutoControle();
         mbsProdutoDAO = new MbsProdutoDAO();
         List lista = mbsProdutoDAO.listAll();
@@ -134,26 +134,38 @@ public class jDlgMbsProdutoNovo extends javax.swing.JDialog {
 
     private void jBtnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnIncluirActionPerformed
         // TODO add your handling code here:
-        jDlgMbsProdutosNovoIA.setTitle("Inclusão");
-        jDlgMbsProdutosNovoIA.setVisible(true);
+        jDlgMbsProdutoNovoIA.setIncluindo(true);
+        jDlgMbsProdutoNovoIA.setTelaAnterior(this);
+        jDlgMbsProdutoNovoIA.setVisible(true);
     }//GEN-LAST:event_jBtnIncluirActionPerformed
 
     private void jBtnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAlterarActionPerformed
         // TODO add your handling code here:
-       jDlgMbsProdutosNovoIA.setTitle("Alteração");
-       jDlgMbsProdutosNovoIA.setVisible(true);       
+       int rowSel = jTblProdutos.getSelectedRow();
+     if (rowSel != -1) {
+        MbsProduto mbsProduto = mbsProdutoControle.getBean(rowSel);
+
+        jDlgMbsProdutoNovoIA.setIncluindo(false);
+        jDlgMbsProdutoNovoIA.beanView(mbsProduto);
+        jDlgMbsProdutoNovoIA.setTelaAnterior(this);
+        jDlgMbsProdutoNovoIA.setVisible(true);
+
+     } else {
+            Util.mensagem("Selecione um Registro!.");
+        }       
 
     }//GEN-LAST:event_jBtnAlterarActionPerformed
 
     private void jBtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluirActionPerformed
         // TODO add your handling code here:
-       if (Util.perguntar("Deseja excluir o registro?") == true) {
+     if (Util.perguntar("Deseja excluir?")) {
             int sel = jTblProdutos.getSelectedRow();
             mbsproduto = mbsProdutoControle.getBean(sel);
             mbsProdutoDAO.delete(mbsproduto);
-            //atualizar a lista no jtable
+
             List lista = mbsProdutoDAO.listAll();
             mbsProdutoControle.setList(lista);
+            Util.mensagem("Registro excluído com sucesso.");
         } else {
             Util.mensagem("Exclusão cancelada.");
         }

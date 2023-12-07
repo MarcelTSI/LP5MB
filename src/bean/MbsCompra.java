@@ -61,7 +61,7 @@ public class MbsCompra  implements java.io.Serializable {
         this.mbsIdCompra = mbsIdCompra;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="mbs_fornecedor")
     public MbsFornecedor getMbsFornecedor() {
         return this.mbsFornecedor;
@@ -71,7 +71,7 @@ public class MbsCompra  implements java.io.Serializable {
         this.mbsFornecedor = mbsFornecedor;
     }
     
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="mbs_funcionario")
     public MbsFuncionario getMbsFuncionario() {
         return this.mbsFuncionario;

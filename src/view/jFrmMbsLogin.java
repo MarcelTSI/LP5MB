@@ -47,6 +47,7 @@ public class jFrmMbsLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jTxtLogin = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -54,6 +55,8 @@ public class jFrmMbsLogin extends javax.swing.JFrame {
         jBtnAcessar = new javax.swing.JButton();
         jBtnCancelar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+
+        jLabel4.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -337,6 +340,7 @@ public class jFrmMbsLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField jPwfSenha;
     private javax.swing.JTextField jTxtLogin;
     // End of variables declaration//GEN-END:variables

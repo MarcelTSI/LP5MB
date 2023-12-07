@@ -23,19 +23,25 @@ import javax.swing.text.MaskFormatter;
  */
 public class jDlgMbsFuncionarioNovoIA extends javax.swing.JDialog {
 
+    private boolean incluindo;
     jDlgMbsFuncionarioNovo jDlgMbsFuncionarioNovo;
     MbsFuncionarioDAO mbsFuncionarioDAO;
     MbsFuncionario mbsFuncionario;
     MbsFuncionarioControle mbsFuncionarioControle;
     MaskFormatter mascaraMbsCpf;
-    
+
     /**
      * Creates new form JDlgUsuariosNovoIA
      */
     public jDlgMbsFuncionarioNovoIA(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setTitle("Inclusão");
+        setTitle("IA Funcionario");
+        if (incluindo) {
+            setTitle("Inclusão");
+        } else {
+            setTitle("Alteração");
+        }
         setLocationRelativeTo(null);
         try {
             mascaraMbsCpf = new MaskFormatter("###.###.###-##");
@@ -44,7 +50,7 @@ public class jDlgMbsFuncionarioNovoIA extends javax.swing.JDialog {
         }
         jFmtCpf.setFormatterFactory(new DefaultFormatterFactory(mascaraMbsCpf));
     }
-    
+
     public MbsFuncionario viewBean() {
         MbsFuncionario mbsfuncionario = new MbsFuncionario();
         mbsfuncionario.setMbsIdFuncionario(Util.strInt(jTxtID.getText()));
@@ -52,12 +58,10 @@ public class jDlgMbsFuncionarioNovoIA extends javax.swing.JDialog {
         mbsfuncionario.setMbsEndereco(jTxtEndereco.getText());
         mbsfuncionario.setMbsApelido(jTxtApelido.getText());
         mbsfuncionario.setMbsCpf(jFmtCpf.getText());
-        
-
 
         return mbsfuncionario;
-    }    
-    
+    }
+
     public void beanView(MbsFuncionario mbsFuncionario) {
         jTxtID.setText(Util.intStr(mbsFuncionario.getMbsIdFuncionario()));
         jTxtNome.setText(mbsFuncionario.getMbsNome());
@@ -66,9 +70,22 @@ public class jDlgMbsFuncionarioNovoIA extends javax.swing.JDialog {
         jFmtCpf.setText(mbsFuncionario.getMbsCpf());
     }
 
-       public void setTelaAnterior(jDlgMbsFuncionarioNovo jdlgMbsFuncionarioNovo){
-           this.jDlgMbsFuncionarioNovo = jDlgMbsFuncionarioNovo;      
-       }
+    public void setTelaAnterior(jDlgMbsFuncionarioNovo jDlgMbsFuncionarioNovo) {
+        this.jDlgMbsFuncionarioNovo = jDlgMbsFuncionarioNovo;
+    }
+
+    /**
+     *
+     * @param incluindo
+     */
+    public void setIncluindo(boolean incluindo) {
+        this.incluindo = incluindo;
+        if (incluindo) {
+            setTitle("Inclusão");
+        } else {
+            setTitle("Alteração");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -186,17 +203,32 @@ public class jDlgMbsFuncionarioNovoIA extends javax.swing.JDialog {
 
     private void jBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnOkActionPerformed
         // TODO add your handling code here:
-        MbsFuncionario mbsFuncionario = viewBean();
+        mbsFuncionario = viewBean();
         mbsFuncionarioDAO = new MbsFuncionarioDAO();
-        mbsFuncionarioDAO.insert(mbsFuncionario);
-        List lista = mbsFuncionarioDAO.listAll();
-        jDlgMbsFuncionarioNovo.mbsFuncionarioControle.setList(lista);
-        setVisible(false);
+
+        if (incluindo) {
+            mbsFuncionarioDAO.insert(mbsFuncionario);
+            Util.mensagem("Registro incluído com sucesso.");
+            List lista = mbsFuncionarioDAO.listAll();
+            jDlgMbsFuncionarioNovo.mbsFuncionarioControle.setList(lista);
+        } else {
+            mbsFuncionarioDAO.update(mbsFuncionario);
+            Util.mensagem("Registro alterado com sucesso.");
+            List lista = mbsFuncionarioDAO.listAll();
+            jDlgMbsFuncionarioNovo.mbsFuncionarioControle.setList(lista);
+
+        }
+
+        Util.limparCampos(jTxtID, jTxtNome, jTxtApelido, jFmtCpf, jTxtEndereco);
+        this.dispose();
+
     }//GEN-LAST:event_jBtnOkActionPerformed
 
     private void jBtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCancelarActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
+        this.dispose();
+        Util.mensagem("A ação foi cancelada!");
+        Util.limparCampos(jTxtID, jTxtNome, jTxtApelido, jFmtCpf, jTxtEndereco);
     }//GEN-LAST:event_jBtnCancelarActionPerformed
 
     /**

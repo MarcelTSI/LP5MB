@@ -5,6 +5,7 @@
  */
 package dao;
 
+import bean.MbsCompra;
 import bean.MbsCompraProduto;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -58,6 +59,15 @@ public class MbsCompraProdutoDAO extends DAO_Abstract {
         session.getTransaction().commit();        
         return lista;
         
+    }
+    
+    public List listProduto(MbsCompra mbsCompra) {
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(MbsCompraProduto.class);
+        criteria.add(Restrictions.eq("mbsCompra", mbsCompra));
+        List lista = criteria.list();
+        session.getTransaction().commit();
+        return lista;
     }
     
 }

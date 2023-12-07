@@ -64,7 +64,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jFmtDataCadastro" min="-2" pref="190" max="-2" attributes="0"/>
+                          <Component id="jFmtData" min="-2" pref="190" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jBtnConsultar" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -89,7 +89,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jTxtNome" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBtnConsultar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jFmtDataCadastro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jFmtData" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
@@ -120,9 +120,9 @@
             <Property name="text" type="java.lang.String" value="Data de Cadastro"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="jFmtDataCadastro">
+        <Component class="javax.swing.JFormattedTextField" name="jFmtData">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFmtDataCadastroActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFmtDataActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

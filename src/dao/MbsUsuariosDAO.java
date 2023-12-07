@@ -98,44 +98,26 @@ public class MbsUsuariosDAO extends DAO_Abstract {
         return lista;
     }
     
-        public Object buscarLogin(String apelido, String senha) {
+     public MbsUsuarios buscarLogin(String apelido, String senha) {
         MbsUsuarios mbsusuarios = null;
 
-        String url = "jdbc:mysql://10.7.0.51:33062/db_marcel_silva";
-        String user = "marcel_silva";
-        String password = "marcel_silva";
+        session.beginTransaction();
 
-        //String url = "jdbc:mysql://localhost:3306/db_marcel_silva";
-        //String user = "root";
-        //String password = "";
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection cnt = DriverManager.getConnection(url, user, password);
+            Criteria criteria = session.createCriteria(MbsUsuarios.class);
+            criteria.add(Restrictions.eq("mbsApelido", apelido));
+            criteria.add(Restrictions.eq("mbsSenha", senha));
 
-            String sql = "SELECT * FROM mbs_usuarios WHERE mbs_apelido = ? AND mbs_senha = ?";
-            PreparedStatement pstm = cnt.prepareStatement(sql);
-            pstm.setString(1, apelido);
-            pstm.setString(2, senha);
-
-            ResultSet rs = pstm.executeQuery();
-
-            if (rs.next()) {
-                mbsusuarios = new MbsUsuarios();
-                mbsusuarios.setMbsApelido(rs.getString("apelido"));
-                mbsusuarios.setMbsSenha(rs.getString("senha"));
-            }
-
-            rs.close();
-            pstm.close();
-            cnt.close();
-
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MbsUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(MbsUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            mbsusuarios = (MbsUsuarios) criteria.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.getTransaction().commit();
         }
 
         return mbsusuarios;
     }
+        
+     
     
 }
